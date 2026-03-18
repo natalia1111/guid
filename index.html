@@ -11,12 +11,14 @@
       margin: 20px auto;
     }
     .slider img {
-      width: 100%;
+      max-width: 100%;
+      height: auto;
       border-radius: 10px;
       display: none;
     }
     .slider img.active {
       display: block;
+      margin: 0 auto;
     }
     .nav-btn {
       position: absolute;
@@ -31,43 +33,35 @@
     }
     .prev { left: 10px; }
     .next { right: 10px; }
-	
-	.slider img {
-    max-width: 100%;   /* картинка растягивается по ширине контейнера */
-    height: auto;      /* сохраняет пропорции */
-    border-radius: 10px;
-    display: none;
-  }
 
-  .slider img.active {
-    display: block;
-    margin: 0 auto;    /* центрирование */
-  }
+    /* Дополнительные настройки для маленьких экранов */
+    @media (max-width: 600px) {
+      .slider img { border-radius: 5px; }
+      .nav-btn { font-size: 14px; padding: 6px; }
+    }
+    @media (min-width: 1200px) {
+      .slider img { max-width: 900px; }
+    }
 
-  /* Дополнительные настройки для маленьких экранов */
-  @media (max-width: 600px) {
-    .slider img {
-      border-radius: 5px;   /* меньше скругление на телефоне */
+    .controls {
+      margin-top: 20px;
     }
-    .nav-btn {
-      font-size: 14px;      /* кнопки меньше */
-      padding: 6px;
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      text-align: center;
     }
-  }
-
-  @media (min-width: 1200px) {
-    .slider img {
-      max-width: 900px;     /* ограничение для больших экранов */
+    button {
+      margin: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
     }
-  }
   </style>
 </head>
 <body>
 
-
 <div class="slider">
-  <!-- Пример: вставь свои картинки -->
-  <img src="img/1.jpg" class="active">
+ <img src="img/1.jpg" class="active">
   <img src="img/2.jpg">
   <img src="img/3.jpg">
   <img src="img/4.jpg">
@@ -119,9 +113,15 @@
   <img src="img/50.jpg">
   <img src="img/51.jpg">
   <img src="img/52.jpg">
-  
+
   <button class="nav-btn prev" onclick="showSlide(-1)">&#10094;</button>
   <button class="nav-btn next" onclick="showSlide(1)">&#10095;</button>
+</div>
+
+<div class="controls">
+  <button onclick="goBack()">Вернуться</button>
+  <input type="number" id="slideNumber" min="1" max="52" placeholder="№">
+  <button onclick="goToSlide()">Перейти</button>
 </div>
 
 <script>
@@ -132,6 +132,23 @@
     slides[current].classList.remove('active');
     current = (current + direction + slides.length) % slides.length;
     slides[current].classList.add('active');
+  }
+
+  function goBack() {
+    // Можно сделать возврат на главную страницу
+    window.history.back();
+    // Или: window.location.href = "index.html";
+  }
+
+  function goToSlide() {
+    const num = parseInt(document.getElementById('slideNumber').value);
+    if (num >= 1 && num <= slides.length) {
+      slides[current].classList.remove('active');
+      current = num - 1;
+      slides[current].classList.add('active');
+    } else {
+      alert("Введите число от 1 до 52");
+    }
   }
 </script>
 
